@@ -1,0 +1,417 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Arttribute Items
+
+## What is an Arttribute Item?
+
+An Arttribute Item is a fundamental concept within the Arttribute platform. It represents a piece of artwork, whether it's a painting, digital illustration, or any other form of artistic creation that can be made digitally accessible. Arttribute Items serve as the core units for artists and creators to showcase their work, manage attributes, and interact with the broader community of art enthusiasts and AI practitioners.
+
+Key features of an Arttribute Item include:
+
+<!-- Table of item attributes-->
+
+| Feature        | Description                                                                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ` id`          | Unique Identifier of an item.                                                                                                                           |
+| `title`        | The title or name of the item.                                                                                                                          |
+| `description`  | A detailed description of the item.                                                                                                                     |
+| `url`          | A URL pointing to where the item file has been stored on the IPFS network.                                                                              |
+| `tags`         | A list of descriptive tags associated with the item.                                                                                                    |
+| `source`       | The platform the item was uploaded from.                                                                                                                |
+| `owner`        | Owner of an item                                                                                                                                        |
+| `project`      | Information about the project associated with the item.                                                                                                 |
+| `license`      | Object conataining licensing information of the item. See our [list of supported licenses](/tutorial/licenses) to check what values this field can take |
+| `price`        | Price information of the item. See our [supported currencies](/tutorial/licenses) to check what values this field can take                              |
+| `needsRequest` | Indicates whether access to the item requires a request or permission from the owner.                                                                   |
+| `created`      | When the item was created (ISO 8601 timestamp)                                                                                                          |
+| `updated`      | When the item was last updated (ISO 8601 timestamp)                                                                                                     |
+
+<!-- Table ends -->
+
+---
+
+## Creating an Arttribute Item
+
+### Step 1: Obtain your API Key
+
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/tutorial/generate-keys)
+
+### Step 2: Obtain an access token
+
+The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/tutorial/generate-keys#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
+
+:::tip
+Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
+:::
+
+### Step 3: Make API request
+
+With your API key and access token in hand, you can start make a request to add an item on the Arttribute platform.
+
+#### Convert the File to Base64 Format or Use Data URL
+
+Before making the actual API request, you must prepare the art item's file by encoding it into base64 format. Here are 2 available options:
+
+- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our [File service](/tutorial/file-service).
+- **Raw Base64 Format:** Alternatively, you can provide the raw base64 string after converting the file, without the MIME type and encoding format prepended to it. With this option, you have to additionally provide the MIME type when making the actual request.
+
+#### Making the actual request
+
+Once you have prepared the file in either base64 format or as a data URL, you can proceed to make the actual API request to create the Arttribute Item. The request should be in JSON format, and it should include a `file` property, which is an object with two key properties:
+
+- `data`: This property should contain either the data URL or the raw base64 string of the file. The format of this property depends on the choice made in the previous step.
+- `mimetype`: If you have chosen to provide the file data in raw base64 format, you **must** include the "mimetype" property. This property specifies the MIME type of the file. However, if you have used a data URL, the MIME type is already included within the URL, and specifying it again in "mimetype" is not necessary as it will be overridden by the data URL.
+
+<Tabs>
+<TabItem value="data-url" label="With Data URL" default>
+
+```json
+{
+  "file": {
+    "data": "data:image/jpeg;base64,/9j/4AAQSkZJR..."
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="base64" label="With Raw Base64">
+
+```json
+{
+  "file": {
+    "data": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkG...",
+    "mimetype": "image/jpeg"
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+By following this two-step process, you can create an Arttribute Item while ensuring that the associated file is provided in the correct format, whether it's a data URL or a raw base64 string. We've provided code snippets below that demonstrate how to structure your API request.
+
+<!-- import Baseurl from "@site/src/components/reusable/BaseUrl";
+<Baseurl></Baseurl>; -->
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  title: "Eye of the tiger",
+  description: "Abstract painting of the human eye",
+  tags: ["colour", "art"],
+  author: "John Doe",
+  source: "instagram",
+  price: {
+    amount: 12,
+    currency: "cUSD",
+  },
+  license: ["ATR", "NCM"],
+  needsRequest: false,
+  file: {
+    data: "data:image/jpeg;base64,/9j/4AAQSkZJ...",
+  },
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/items", //TODO: Change this to API base url variable
+    headers: {
+      "x-api-key": "17eoF8...",
+      "Content-Type": "text/plain",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'http://localhost:5000/items' \
+--header 'x-api-key: 17eo...' \
+--header 'Content-Type: text/plain' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...' \
+--data '{
+    "title": "Eye of the tiger",
+    "description": "Abstract painting of the human eye",
+    "tags": [
+        "colour",
+        "art"
+    ],
+    "author": "John Doe",
+    "source": "instagram",
+    "price": {
+        "amount": 12,
+        "currency": "cUSD"
+    },
+    "license": [
+        "ATR",
+        "NCM"
+    ],
+    "needsRequest": false,
+    "file": {
+        "data": "/9j/4AAQSkZJRgABAQAAAQABAAD2wCEAAkGBx...",
+        "mimetype": "image/jpeg"
+    }
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Exploring Additional Functionality
+
+Arttribute provides a range of features beyond creating art items. In this section, we'll walk you through how to:
+
+- Fetch information about an Item
+- Retrieve information about multiple Items
+  - Filter results by tags and source
+- Update an Item
+- Delete an Item
+
+### Fetching a single item
+
+To retrieve detailed information about a specific art item, you can use the `GET /items/:id` endpoint, where `:id` represents the unique identifier of the item you want to fetch. Here's an example request:
+
+:::note
+**Auth required:** API Key or Access token
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+let config = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "http://localhost:5000/items/:id", //TODO: Change to url var
+  headers: {
+    Authorization: "Bearer eyJhbGciOi...",
+  },
+};
+
+axios
+  .request(config)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a GET request with cURL"
+curl --location 'http://localhost:5000/items/:id' \
+--header 'Authorization: Bearer eyJhbGc...'
+```
+
+</TabItem>
+
+</Tabs>
+
+Replace `:id` with the actual ID of the art item you wish to retrieve. The response will contain comprehensive details about the item, including its title, description, author, source, tags, license information, and more, as described in the [Introduction](#what-is-an-arttribute-item) section.
+
+### Fetching multiple items
+
+To fetch multiple art items, you can use the `GET /items` endpoint. You can also provide optional query parameters to refine your search by tags or source of the item. You can provide multiple tags separated by commas in the `tags` query parameter and the results will be filtered to match all provided tags.
+:::note
+**Auth required:** API Key or Access token
+:::
+:::info
+The search parameters `tags` and `source` are both case insensitive
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/items?tags=cgi,art&source=instagram",
+    headers: {
+      Authorization: "Bearer eyJhbGciOiJIUzI...",
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a GET request with cURL"
+curl --location 'http://localhost:5000/items?tags=cgi%2Cart&source=instagram' \
+--header 'Authorization: Bearer eyJhbGciOiJI...'
+```
+
+</TabItem>
+
+</Tabs>
+
+This request will retrieve art items tagged with "cgi" and "art" that are associated with the source "instagram." Explore different query parameters to tailor your search.
+
+### Updating an item
+
+To update the details of an existing art item, use the `PATCH /items/:id` endpoint. You'll need the item's unique ID for this operation. In your request, provide a JSON object containing only the fields to update and their new values. The following fields of an [item object](#arttribute-items) can be changed: `title`, `description`, `tags`, `author`, `source`, `license`, `price`, `needsRequest`
+
+:::note
+**Auth required:** API Key or Access token or both
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  title: "New Updated Title",
+  price: {
+    amount: 11,
+    currency: "cUSD",
+  },
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/items/:id",
+    headers: {
+      "x-api-key": "17eoF8wk...",
+      "Content-Type": "application/json",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH 'http://localhost:5000/items/:id' \
+--header 'x-api-key: 17eoF8wk...' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
+--data '{
+    "title": "New Updated Title",
+    "price": {
+        "amount": 11,
+        "currency": "cUSD"
+    }
+}'
+```
+
+</TabItem>
+
+</Tabs>
+Replace :id with the actual ID of the art item you wish to update
+
+:::caution
+To successfully update an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/tutorial/generate-keys#generating-user-access-tokens)
+:::
+
+### Deleting an item
+
+If you wish to remove an art item from Arttribute, you can do so using the DELETE /items/:id endpoint. As with updates, you'll need the item's unique ID for deletion. Be aware that deleting an item is a permanent action, so use caution.
+
+:::note
+**Auth required:** API Key or Access token or both
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/items/:id", //TODO: Change to variable
+    headers: {
+      Authorization: "Bearer eyJhbGciO...",
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'http://localhost:5000/items/:id' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...'
+```
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/tutorial/generate-keys#generating-user-access-tokens)
+:::

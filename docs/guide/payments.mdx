@@ -1,0 +1,132 @@
+---
+sidebar_position: 7
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Payments
+
+## Payments in Arttribute?
+
+A Payment in Attribute represents a monetary transaction. Whether it's for acquiring rights to use an item or collection or gifting the owner of an item, payments serve as the backbone of all financial interactions on the platform. It facilitates the financial bridge between artists, AI practitioners, and other users.
+
+Key features of an Arttribute Payment include:
+
+<!-- Table of payment attributes-->
+
+| Feature           | Description                                                          |
+| ----------------- | -------------------------------------------------------------------- |
+| `id`              | Unique Identifier of a payment.                                      |
+| `reference`       | Object containing the type and id of the associated item or service. |
+| `transactionHash` | Hash of the transaction for verification.                            |
+| `sender`          | User who initiated the payment.                                      |
+| `receiver`        | User who receives the payment.                                       |
+| `amount`          | Amount of the payment.                                               |
+| `currency`        | Currency in which payment was made.                                  |
+| `type`            | Type of payment (e.g., purchase, donation).                          |
+| `source`          | The platform or medium from where the payment was made.              |
+| `project`         | Information about the project associated with the payment.           |
+| `network`         | Network on which the payment was processed (e.g., Ethereum).         |
+| `created`         | When the payment was made (ISO 8601 timestamp).                      |
+
+<!-- Table ends -->
+
+---
+
+## Creating an Arttribute Payment
+
+### Step 1: Obtain your API Key
+
+To interact with the payment functionalities of the Arttribute platform, you'll first need an API key. This key authenticates your requests and allows access to the Arttribute's payment features. To get an API key, follow the steps in the [Generating Keys section](/guide/generate-keys).
+
+### Step 2: Make a Payment
+
+With your API key, you can initiate a payment on the Arttribute platform. Ensure you have the recipient's details, the amount, and other necessary payment attributes.
+
+<Tabs>
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  reference":{
+        "type":"item",
+        "id":"6d7b4833-b3b1-4bc5-8567-b34da0256989"
+    },
+    "transactionHash":"0xac3b0f9b6c6fb8a65e4cf3c3a8c8f82a1815e16f20138608c3c4b57a8b15fa33",
+    "amount":0.01,
+    "currency":"cUSD",
+    "network":{
+        "chainId":"42220",
+        "name":"celo"
+    }
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/payments", //TODO: Change this to API base url variable
+    headers: {
+      "x-api-key": "YourAPIKey",
+      "Content-Type": "application/json",
+      Authorization: "Bearer YourAccessToken",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'http://localhost:5000/payments' \
+--header 'x-api-key: YourAPIKey' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YourAccessToken' \
+--data '{
+    reference":{
+        "type":"item",
+        "id":"6d7b4833-b3b1-4bc5-8567-b34da0256989"
+    },
+    "transactionHash":"0xac3b0f9b6c6fb8a65e4cf3c3a8c8f82a1815e16f20138608c3c4b57a8b15fa33",
+    "amount":0.01,
+    "currency":"cUSD",
+    "network":{
+        "chainId":"42220",
+        "name":"celo"
+    }
+}'
+```
+
+</TabItem>
+</Tabs>
+
+### Step 3: Verify Payment
+
+After making a payment, always verify its status to ensure it was processed successfully. Use the `transactionHash` or the payment `id` to fetch details and verify.
+
+---
+
+## Further Operations
+
+### Retrieving Payments on Arttribute
+
+1. **Retrieve Sent Payments:** Allows a user to see all the payments they've made within Arttribute.
+2. **Retrieve Received Payments:** Enables a user to view all payments they've received on the platform.
+
+To utilize these features, you'll require:
+
+- **Authorization:** As with making payments, retrieving payment data requires a Bearer Token for authentication.
+
+```
+
+```

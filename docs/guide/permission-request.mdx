@@ -1,0 +1,177 @@
+---
+sidebar_position: 6
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Permission Requests
+
+## What is a Permission Request?
+
+A Permission Request is a fundamental mechanism within Arttribute that facilitates communication between users when one user desires to acquire rights to use an item or collection that requires explicit permission from its owner. It provides a structured format for requesting permission, handling the approval or rejection of that request, and maintaining transparency throughout the process.
+
+Key features of a Permission Request include:
+
+<!-- Table of request attributes -->
+
+| Feature        | Description                                                             |
+| -------------- | ----------------------------------------------------------------------- |
+| `id`           | Unique Identifier of a request.                                         |
+| `reference`    | Reference to the type and ID of the item or collection being requested. |
+| `sender`       | User initiating the permission request.                                 |
+| `receiver`     | User who owns the item or collection being requested.                   |
+| `senderNote`   | Optional note or message from the sender.                               |
+| `receiverNote` | Optional response or note from the receiver.                            |
+| `accepted`     | Indicates whether the request has been accepted by the receiver.        |
+| `closed`       | Indicates whether the request process is concluded.                     |
+| `created`      | When the request was initiated (ISO 8601 timestamp).                    |
+| `updated`      | When the request was last updated or acted upon (ISO 8601 timestamp).   |
+
+<!-- Table ends -->
+
+---
+
+## Creating an Arttribute Permission Request
+
+### Step 1: Authenticate as a User
+
+To create a permission request, you first need to be authenticated as a registered Arttribute user. This ensures that both the sender and receiver identities are verified within the platform. The authentication can be done using [Arttribute's authentication mechanism](/guide/auth).
+
+### Step 2: Identify the Desired Item or Collection
+
+Before initiating a request, you must identify the specific item or collection you are interested in. This can be done by browsing the platform or using the Arttribute API's search functionality.
+
+### Step 3: Send Permission Request
+
+With the desired item or collection identified, you can proceed to send a permission request. This action notifies the item or collection owner, allowing them to review and act upon your request.
+
+<Tabs>
+<TabItem value="nodejs" label="NodeJS" default>
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  reference: {
+    type: "item",
+    id: "example-item-id",
+  },
+  senderNote:
+    "I'd like to use this piece for a project. Kindly grant permission.",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/permission-requests",
+    headers: {
+      Authorization: "Bearer eyJhbGciOi...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'http://localhost:5000/permission-requests' \
+--header 'Authorization: Bearer eyJhbGciOi...' \
+--data '{
+    "reference": {
+        "type": "item",
+        "id": "example-item-id"
+    },
+    "senderNote": "I'd like to use this piece for a project. Kindly grant permission."
+}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Reviewing and Acting on Received Permission Requests
+
+As an owner of art items or collections, you might receive permission requests from other users. Arttribute provides an easy interface to review these requests and decide whether to grant or decline them.
+
+### Step 1: Review the Permission Request
+
+Review the details of the received request, including the sender's note, and consider their request's context.
+
+### Step 2: Make a Decision
+
+Based on your assessment, decide whether to grant or decline the request. If granted, the requester will have the permission as defined by the license associated with the item or collection.
+
+### Step 3: Optionally Provide a Note
+
+When acting on a request, you can provide an optional note. This can be useful to communicate your decision's rationale or any other information you deem necessary.
+
+### Making the API Request
+
+#### Request Body
+
+The request body should include the following parameters:
+
+- `accepted` (boolean, required): Indicates whether the request has been accepted or rejected.
+- `receiverNote` (string, optional): An optional note or message from the receiver (item/collection owner) in response to the request.
+
+:::caution
+The optional note can only be used when declining a permission requests. Permission request acceptance should be clear, avoiding any ambiguity. Thus when `accepted` is set to true, `receiverNote` should not be provided. Otherwise, the API will return a BAD REQUEST ERROR "request acceptance should be unequivocal".
+:::
+
+<Tabs>
+<TabItem value="nodejs" label="NodeJS" default>
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  accepted: true,
+  receiverNote: "Permission granted. Please credit appropriately.",
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: "{{baseUrl}}/requests/example-request-id",
+    headers: {
+      Authorization: "Bearer eyJhbGciOi...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH '{{baseUrl}}/requests/example-request-id' \
+--header 'Authorization: Bearer eyJhbGciOi...' \
+--header 'Content-Type: application/json' \
+--data '{
+    "accepted": true,
+    "receiverNote": "Permission granted. Please credit appropriately."
+}'
+```
+
+</TabItem>
+</Tabs>
+
+Once you've updated the status of the request, the sender will be notified of your decision. If the request is accepted, they can proceed to access the item or collection under the terms specified by its license.
+
+---

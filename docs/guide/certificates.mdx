@@ -1,0 +1,225 @@
+---
+sidebar_position: 5
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Arttribute Certificates
+
+## What is an Arttribute Certificate?
+
+An Arttribute Certificate is a core element within the Arttribute ecosystem. It provides a verifiable proof of proper rights acquisition associated with items or collections. Certificates validate the legitimacy and ownership of content, enabling secure and transparent transactions between artists, art enthusiasts, and AI practitioners.
+
+Key features of an Arttribute Certificate include:
+
+<!-- Table of certificate attributes-->
+
+| Feature        | Description                                                              |
+| -------------- | ------------------------------------------------------------------------ |
+| `id`           | Unique Identifier of a certificate.                                      |
+| `owner`        | User who owns this certificate.                                          |
+| `reference`    | Details about what this certificate references (type, id, owner).        |
+| `description`  | A brief description of the certificate.                                  |
+| `slug`         | A URL-friendly version of the certificate's name or descriptor.          |
+| `created`      | When the certificate was created (ISO 8601 timestamp).                   |
+| `minted`       | Indicates whether the certificate has been minted as a blockchain token. |
+| `tokenDetails` | Details about the blockchain token if the certificate is minted.         |
+
+<!-- Table ends -->
+
+---
+
+## Creating an Arttribute Certificate
+
+### Step 1: Obtain an access token
+
+Creating a certificate requires an access token to identify the user on whose behalf the application is working. Ensure the user is registered on Arttribute with a wallet. See the process for [Generating access tokens](/guide/generate-keys#generating-user-access-tokens).
+
+:::tip
+To authenticate a user, prompt them to sign a message using a wallet registered under Arttribute. This step confirms the user's identity and generates an access token for subsequent requests.
+:::
+
+### Step 2: Check for Permission and Payment Requirements
+
+Before proceeding with certificate creation, ensure that the item or collection you are referencing with the certificate doesn't have any restrictions.
+
+1. **Checking for Permissions**: Some items or collections may require explicit permission from the owner before they can be used or referenced. In such cases, you need to [Send a permission request](/guide/permission-request#sending-perssion-request) to the owner. Once the owner grants permission, you can move on to the next steps.
+
+2. **Making Payments**: If the item or collection has a price tag, you'll need to make the necessary payment. Ensure the payment is successful before proceeding. See the process for [Making payments for items and collections](/guide/payments#making-payments).
+
+:::info
+Some items might require both permission and payment. Make sure all requirements are met in order to successfully generate a certificate
+:::
+
+### Step 3: Make API request
+
+With your access token ready and the necessary permissions and payment paymentsyou can begin the certificate creation process. Below are the code snippets illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  referenceType: "item",
+  referenceId: "12345",
+  referenceOwner: "JohnDoe",
+  description: "Certificate for an art item",
+  slug: "certificate-item-12345",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute/v1/certificates",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer your_access_token",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'https://api.arttribute/v1/certificates' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer your_access_token' \
+--data '{
+  "referenceType": "item",
+  "referenceId": "12345",
+  "referenceOwner": "JohnDoe",
+  "description": "Certificate for an art item",
+  "slug": "certificate-item-12345"
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Minting a Certificate
+
+After obtaining a certificate, you may want to "mint" it, turning it into a unique digital token on the blockchain. Minting ensures that the certificate has a unique, verifiable presence on the blockchain.
+
+### Step 1: Make API request to Mint
+
+Invoke the API endpoint designed to facilitate the minting process.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+let data = {
+  message: "Your custom message, if any.",
+  signature: "Your generated signature.",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer your_access_token",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'http://localhost:5000/certificates/mint/:certificateId' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer your_access_token' \
+--data '{
+  "message": "Your custom message, if any.",
+  "signature": "Your generated signature."
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Step 2: Confirm Minting on Blockchain
+
+Once the API responds successfully, verify on the respective blockchain network that the certificate has indeed been minted. You can do this by checking the provided digital wallet address and verifying the token's presence.
+
+## Exploring Additional Functionality
+
+Arttribute offers a plethora of features beyond just creating certificates. This section introduces:
+
+- Retrieving certificate details
+- Fetching multiple certificates
+
+### Retrieving a specific certificate
+
+Utilize the `GET /certificates/:id` endpoint to acquire details of a specific certificate. Replace `:id` with the certificate's unique identifier. The response will provide exhaustive information about the certificate.
+
+:::note
+**Auth required:** API Key or Access token
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute/v1/certificates/:id", // Update to actual certificate ID
+    headers: {
+      Authorization: "Bearer your_access_token",
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a GET request with cURL"
+curl --location --request GET 'https://api.arttribute/v1/certificates/:id' \
+--header 'Authorization: Bearer your_access_token'
+```
+
+</TabItem>
+
+</Tabs>

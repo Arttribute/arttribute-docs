@@ -32,6 +32,16 @@ const config = {
     locales: ["en"],
   },
 
+  headTags: [
+    {
+      tagName: "link",
+      attributes: {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css?family=Chakra Petch",
+      },
+    },
+  ],
+
   presets: [
     [
       "classic",
@@ -65,16 +75,16 @@ const config = {
       },
       navbar: {
         title: "Arttribute",
-        logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
-        },
+        // logo: {
+        //   alt: "My Site Logo",
+        //   src: "img/logo.svg",
+        // },
         items: [
           {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Tutorial",
+            label: "Documentation",
           },
           {
             href: "https://github.com/facebook/docusaurus",
@@ -90,7 +100,7 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Tutorial",
+                label: "Documentation",
                 to: "/docs/intro",
               },
             ],
@@ -126,7 +136,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Arttribute`,
       },
       prism: {
         theme: lightCodeTheme,

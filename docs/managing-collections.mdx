@@ -1,0 +1,427 @@
+---
+sidebar_position: 5
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Arttribute Collections
+
+## What is an Arttribute Collection?
+
+An Arttribute Collection is a foundational concept within the Arttribute platform, encompassing a curated grouping of [Arttribute Items](/guide/managing-items). Arttribute Collections serve as fundamental units for artists and creators to exhibit their work, organize attributes, and engage with the broader community of art enthusiasts and AI practitioners.
+
+Key features of an Arttribute Collection include:
+
+<!-- Table of collection attributes-->
+
+| Feature        | Description                                                                                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ` id`          | Unique Identifier of an collection.                                                                                                                        |
+| `title`        | The title or name of the collection.                                                                                                                       |
+| `description`  | A detailed description of the collection.                                                                                                                  |
+| `items`        | The items in the collection.                                                                                                                               |
+| `tags`         | A list of descriptive tags associated with the collection.                                                                                                 |
+| `isPublic`     | Whether the collection is public or not.                                                                                                                   |
+| `owner`        | Owner of an collection                                                                                                                                     |
+| `project`      | Information about the project associated with the collection.                                                                                              |
+| `license`      | Object conataining licensing information of the collection. See our [list of supported licenses](/guide/licenses) to check what values this field can take |
+| `price`        | Price information of the collection. See our [supported currencies](/guide/licenses) to check what values this field can take                              |
+| `needsRequest` | Indicates whether access to the collection requires a request or permission from the owner.                                                                |
+| `created`      | When the collection was created (ISO 8601 timestamp)                                                                                                       |
+| `updated`      | When the collection was last updated (ISO 8601 timestamp)                                                                                                  |
+
+<!-- Table ends -->
+
+---
+
+## Creating an Arttribute Collection
+
+### Step 1: Obtain your API Key
+
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/guide/generate-keys)
+
+### Step 2: Obtain an access token
+
+The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/guide/generate-keys#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
+
+:::tip
+Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
+:::
+
+### Step 3: Make API request
+
+With your API key and access token in hand, you can start make a request to add an collection on the Arttribute platform. We've provided code snippets below that demonstrate how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  title: "Copper Collective",
+  description: "Collection of copper paintings",
+  isPublic: true,
+  tags: ["copper", "art"],
+  price: {
+    amount: 12,
+    currency: "cUSD",
+  },
+  license: ["ATR", "NCM"],
+  needsRequest: false,
+};
+
+axios
+  .request({
+    method: "post",
+    url: "http://localhost:5000/collections", //TODO: Change this to API base url variable
+    headers: {
+      "x-api-key": "17eoF8...",
+      "Content-Type": "text/plain",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'http://localhost:5000/collections' \
+--header 'x-api-key: 17eo...' \
+--header 'Content-Type: text/plain' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...' \
+--data '{
+    "title": "Copper Collective",
+    "description": "Collection of copper paintings",
+    "isPublic": true,
+    "tags": ["copper", "art"],
+    "price": {
+      "amount": 12,
+      "currency": "cUSD",
+    },
+    "license": ["ATR", "NCM"],
+    "needsRequest": false,
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Exploring Additional Functionality
+
+In this section, we'll walk you through how to:
+
+- [Fetch information about a collection](/guide/managing-collections#fetching-a-single-collection)
+- [Retrieve information about multiple collections](/guide/managing-collections#fetching-multiple-collections)
+- [Update a collection](/guide/managing-collections#updating-a-collection)
+  - [Change the visibility](/guide/managing-collections#change-the-visibility-of-a-collection)
+  - [Add an item to the collection](/guide/managing-collections#add-an-item-to-a-collection)
+  - [Remove an item from the collection](/guide/managing-collections#remove-an-item-from-a-collection)
+- [Delete a Collection](/guide/managing-collections#deleting-a-collection)
+
+### Fetching a single collection
+
+To retrieve detailed information about a specific collection, you can use the `GET /collections/:id` endpoint, where `:id` represents the unique identifier of the collection you want to fetch. Here's an example request:
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+let config = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "http://localhost:5000/collections/:id", //TODO: Change to url var
+};
+
+axios
+  .request(config)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a GET request with cURL"
+curl --location 'http://localhost:5000/collections/:id'
+```
+
+</TabItem>
+
+</Tabs>
+
+Replace `:id` with the actual ID of the art collection you wish to retrieve. The response will contain comprehensive details about the collection as described in the [introduction](#what-is-an-arttribute-collection) section.
+
+### Fetching multiple collections
+
+To fetch all collections, you can use the `GET /collections` endpoint.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/collections",
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a GET request with cURL"
+curl --location 'http://localhost:5000/collections'
+```
+
+</TabItem>
+
+</Tabs>
+
+This request will retrieve all collections.
+
+### Updating a collection
+
+This section provides details for three functionalities to update a collection as follows:
+
+:::note
+**Auth required:** Access token
+:::
+
+#### Change the visibility of a collection
+
+This request allows you to change the visibility of a collection between public and private using `PATCH /collections/:id` endpoint, where `:id` represents the unique identifier of the collection you want to update. Also, pass the `isPublic` variable in the body.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  isPublic: true,
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/collections/:id",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH 'http://localhost:5000/collections/:id' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
+--data '{
+    "isPublic": true
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Add an item to a collection
+
+This request allows you to add an item to a collection using `PATCH /collections/:id/items` endpoint, where `:id` represents the unique identifier of the collection you want to update. Also, pass the `itemId` variable in the body.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  itemId: "05d7cd...",
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/collections/:id/items",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH 'http://localhost:5000/collections/:id/items' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
+--data '{
+    "itemId": "05d7cd..."
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Remove an item from a collection
+
+This request allows you to add an item to a collection using `DELETE /collections/:id/items/:itemId` endpoint, where `:id` represents the unique identifier of the collection you want to update and `itemId` is the identifier of the item to remove from the collection.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/collections/:id/items/:itemId",
+    headers: {
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'http://localhost:5000/collections/:id/items/:itemId' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
+```
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/guide/generate-keys#generating-user-access-tokens)
+:::
+
+### Deleting a collection
+
+If you wish to remove a collection from Arttribute, you can do so using the `DELETE /collections/:id` endpoint. As with updates, you'll need the collection's unique ID for deletion. Be aware that deleting an item is an irreversible action, so use caution.
+
+:::note
+**Auth required:** Access token
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    maxBodyLength: Infinity,
+    url: "http://localhost:5000/collections/:id", //TODO: Change to variable
+    headers: {
+      Authorization: "Bearer eyJhbGciO...",
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+<!-- TODO: change to url variable  -->
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'http://localhost:5000/collections/:id' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...'
+```
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/guide/generate-keys#generating-user-access-tokens)
+:::

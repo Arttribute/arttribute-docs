@@ -10,27 +10,27 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 ## What is an Arttribute Collection?
 
-An Arttribute Collection is a foundational concept within the Arttribute platform, encompassing a curated grouping of [Arttribute Items](/guide/managing-items). Arttribute Collections serve as fundamental units for artists and creators to exhibit their work, organize attributes, and engage with the broader community of art enthusiasts and AI practitioners.
+An Arttribute Collection is a foundational concept within the Arttribute platform, encompassing a curated grouping of [Arttribute Items](/managing-items). Arttribute Collections serve as fundamental units for artists and creators to exhibit their work, organize attributes, and engage with the broader community of art enthusiasts and AI practitioners.
 
 Key features of an Arttribute Collection include:
 
 <!-- Table of collection attributes-->
 
-| Feature        | Description                                                                                                                                                |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ` id`          | Unique Identifier of an collection.                                                                                                                        |
-| `title`        | The title or name of the collection.                                                                                                                       |
-| `description`  | A detailed description of the collection.                                                                                                                  |
-| `items`        | The items in the collection.                                                                                                                               |
-| `tags`         | A list of descriptive tags associated with the collection.                                                                                                 |
-| `isPublic`     | Whether the collection is public or not.                                                                                                                   |
-| `owner`        | Owner of an collection                                                                                                                                     |
-| `project`      | Information about the project associated with the collection.                                                                                              |
-| `license`      | Object conataining licensing information of the collection. See our [list of supported licenses](/guide/licenses) to check what values this field can take |
-| `price`        | Price information of the collection. See our [supported currencies](/guide/licenses) to check what values this field can take                              |
-| `needsRequest` | Indicates whether access to the collection requires a request or permission from the owner.                                                                |
-| `created`      | When the collection was created (ISO 8601 timestamp)                                                                                                       |
-| `updated`      | When the collection was last updated (ISO 8601 timestamp)                                                                                                  |
+| Feature        | Description                                                                                                                                          |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ` id`          | Unique Identifier of an collection.                                                                                                                  |
+| `title`        | The title or name of the collection.                                                                                                                 |
+| `description`  | A detailed description of the collection.                                                                                                            |
+| `items`        | The items in the collection.                                                                                                                         |
+| `tags`         | A list of descriptive tags associated with the collection.                                                                                           |
+| `isPublic`     | Whether the collection is public or not.                                                                                                             |
+| `owner`        | Owner of an collection                                                                                                                               |
+| `project`      | Information about the project associated with the collection.                                                                                        |
+| `license`      | Object conataining licensing information of the collection. See our [list of supported licenses](/licenses) to check what values this field can take |
+| `price`        | Price information of the collection. See our [supported currencies](/licenses) to check what values this field can take                              |
+| `needsRequest` | Indicates whether access to the collection requires a request or permission from the owner.                                                          |
+| `created`      | When the collection was created (ISO 8601 timestamp)                                                                                                 |
+| `updated`      | When the collection was last updated (ISO 8601 timestamp)                                                                                            |
 
 <!-- Table ends -->
 
@@ -40,11 +40,11 @@ Key features of an Arttribute Collection include:
 
 ### Step 1: Obtain your API Key
 
-Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/guide/generate-keys)
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
 
 ### Step 2: Obtain an access token
 
-The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/guide/generate-keys#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
+The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
 
 :::tip
 Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
@@ -123,13 +123,13 @@ curl --location 'http://localhost:5000/collections' \
 
 In this section, we'll walk you through how to:
 
-- [Fetch information about a collection](/guide/managing-collections#fetching-a-single-collection)
-- [Retrieve information about multiple collections](/guide/managing-collections#fetching-multiple-collections)
-- [Update a collection](/guide/managing-collections#updating-a-collection)
-  - [Change the visibility](/guide/managing-collections#change-the-visibility-of-a-collection)
-  - [Add an item to the collection](/guide/managing-collections#add-an-item-to-a-collection)
-  - [Remove an item from the collection](/guide/managing-collections#remove-an-item-from-a-collection)
-- [Delete a Collection](/guide/managing-collections#deleting-a-collection)
+- [Fetch information about a collection](/managing-collections#fetching-a-single-collection)
+- [Retrieve information about multiple collections](/managing-collections#fetching-multiple-collections)
+- [Update a collection](/managing-collections#updating-a-collection)
+  - [Change the visibility](/managing-collections#change-the-visibility-of-a-collection)
+  - [Add an item to the collection](/managing-collections#add-an-item-to-a-collection)
+  - [Remove an item from the collection](/managing-collections#remove-an-item-from-a-collection)
+- [Delete a Collection](/managing-collections#deleting-a-collection)
 
 ### Fetching a single collection
 
@@ -372,7 +372,7 @@ curl --location --request DELETE 'http://localhost:5000/collections/:id/items/:i
 </Tabs>
 
 :::caution
-To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/guide/generate-keys#generating-user-access-tokens)
+To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
 :::
 
 ### Deleting a collection
@@ -423,5 +423,5 @@ curl --location --request DELETE 'http://localhost:5000/collections/:id' \
 </Tabs>
 
 :::caution
-To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/guide/generate-keys#generating-user-access-tokens)
+To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
 :::

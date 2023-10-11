@@ -5,3 +5,30 @@ sidebar_position: 3
 # Generating Keys
 
 ## Generating User Access Tokens
+
+A user access token is a digital token that allows a user to access a protected resource. Arttribute uses user access tokens to authenticate users and authorize them to perform various actions, such as uploading and managing art, creating collections, and attributing art.
+
+To generate a user access token, you can use the Arttribute API. The API will provide you with a token that is valid for a limited period of time. You can then use this token to access Arttribute resources.
+
+### Step 1: Sign an account access message
+
+An account access message is a message that is used to verify your identity and authorize you to access a protected resource. Arttribute uses account access messages to authenticate users and authorize them to perform certain actions, such as generating user access tokens.
+
+To sign an account access message, you can use your Web3 wallet or a library such as ethers.js. If you are using a library such as ethers.js, you will need to provide the library with your private key.
+
+### Step 2: Request for Access Tokens
+
+Once you have signed an account access message, you can request user access tokens from Arttribute. To request a user access token, you can use the Arttribute API.
+
+Make a POST request to the `/auth` endpoint.  
+The body should have the following keys:
+
+`address` : The user's wallet address.  
+`message` : A message that will be signed by the user's wallet.  
+`signature` : The signed message provided by the user's wallet.
+
+The user will then get the response that is an object with the following keys:
+
+`token` : A JSON Web Token.
+
+The response contains the access token required to access resources and perform various actions.

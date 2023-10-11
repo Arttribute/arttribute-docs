@@ -27,7 +27,7 @@ Key features of an Arttribute Item include:
 | `owner`        | Owner of an item                                                                                                                               |
 | `project`      | Information about the project associated with the item.                                                                                        |
 | `license`      | Object conataining licensing information of the item. See our [list of supported licenses](/licenses) to check what values this field can take |
-| `price`        | Price information of the item. See our [supported currencies](/licenses) to check what values this field can take                              |
+| `price`        | Price information of the item. See our [supported currencies](/payments#supported-currencies) to check what values this field can take         |
 | `needsRequest` | Indicates whether access to the item requires a request or permission from the owner.                                                          |
 | `created`      | When the item was created (ISO 8601 timestamp)                                                                                                 |
 | `updated`      | When the item was last updated (ISO 8601 timestamp)                                                                                            |
@@ -41,9 +41,11 @@ Key features of an Arttribute Item include:
 ### Step 1: Obtain your API Key
 
 Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
 
 ### Step 2: Obtain an access token
 
+The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
 The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
 
 :::tip
@@ -58,6 +60,7 @@ With your API key and access token in hand, you can start make a request to add 
 
 Before making the actual API request, you must prepare the art item's file by encoding it into base64 format. Here are 2 available options:
 
+- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our [File service](/file-service).
 - **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our [File service](/file-service).
 - **Raw Base64 Format:** Alternatively, you can provide the raw base64 string after converting the file, without the MIME type and encoding format prepended to it. With this option, you have to additionally provide the MIME type when making the actual request.
 
@@ -128,7 +131,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/items", //TODO: Change this to API base url variable
+    url: "https://dev.api.arttribute.io/items",
     headers: {
       "x-api-key": "17eoF8...",
       "Content-Type": "text/plain",
@@ -149,7 +152,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'http://localhost:5000/items' \
+curl --location 'https://dev.api.arttribute.io/items' \
 --header 'x-api-key: 17eo...' \
 --header 'Content-Type: text/plain' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...' \
@@ -210,7 +213,7 @@ const axios = require("axios");
 let config = {
   method: "get",
   maxBodyLength: Infinity,
-  url: "http://localhost:5000/items/:id", //TODO: Change to url var
+  url: "https://dev.api.arttribute.io/items/:id",
   headers: {
     Authorization: "Bearer eyJhbGciOi...",
   },
@@ -230,10 +233,8 @@ axios
 
 <TabItem value="curl" label="cURL">
 
-<!-- TODO: change to url variable  -->
-
 ```bash title="Making a GET request with cURL"
-curl --location 'http://localhost:5000/items/:id' \
+curl --location 'https://dev.api.arttribute.io/items/:id' \
 --header 'Authorization: Bearer eyJhbGc...'
 ```
 
@@ -264,7 +265,7 @@ axios
   .request({
     method: "get",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/items?tags=cgi,art&source=instagram",
+    url: "https://dev.api.arttribute.io/items?tags=cgi,art&source=instagram",
     headers: {
       Authorization: "Bearer eyJhbGciOiJIUzI...",
     },
@@ -281,10 +282,8 @@ axios
 
 <TabItem value="curl" label="cURL">
 
-<!-- TODO: change to url variable  -->
-
 ```bash title="Making a GET request with cURL"
-curl --location 'http://localhost:5000/items?tags=cgi%2Cart&source=instagram' \
+curl --location 'https://dev.api.arttribute.io/items?tags=cgi%2Cart&source=instagram' \
 --header 'Authorization: Bearer eyJhbGciOiJI...'
 ```
 
@@ -320,7 +319,7 @@ axios
   .request({
     method: "patch",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/items/:id",
+    url: "https://dev.api.arttribute.io/items/:id",
     headers: {
       "x-api-key": "17eoF8wk...",
       "Content-Type": "application/json",
@@ -340,10 +339,8 @@ axios
 
 <TabItem value="curl" label="cURL">
 
-<!-- TODO: change to url variable  -->
-
 ```bash title="Making a PATCH request with cURL"
-curl --location --request PATCH 'http://localhost:5000/items/:id' \
+curl --location --request PATCH 'https://dev.api.arttribute.io/items/:id' \
 --header 'x-api-key: 17eoF8wk...' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
@@ -384,7 +381,7 @@ axios
   .request({
     method: "delete",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/items/:id", //TODO: Change to variable
+    url: "https://dev.api.arttribute.io/items/:id",
     headers: {
       Authorization: "Bearer eyJhbGciO...",
     },
@@ -401,10 +398,8 @@ axios
 
 <TabItem value="curl" label="cURL">
 
-<!-- TODO: change to url variable  -->
-
 ```bash title="Making a DELETE request with cURL"
-curl --location --request DELETE 'http://localhost:5000/items/:id' \
+curl --location --request DELETE 'https://dev.api.arttribute.io/items/:id' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...'
 ```
 
@@ -413,5 +408,6 @@ curl --location --request DELETE 'http://localhost:5000/items/:id' \
 </Tabs>
 
 :::caution
+To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
 To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
 :::

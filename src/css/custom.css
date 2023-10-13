@@ -5,6 +5,9 @@
  */
 
 /* You can override the default Infima variables here. */
+
+@import "~@rainbow-me/rainbowkit/styles.css";
+
 :root {
   --ifm-color-primary: #651fff;
   --ifm-color-primary-dark: #5102ff;

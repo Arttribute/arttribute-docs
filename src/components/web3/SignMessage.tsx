@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSignMessage } from "wagmi";
 import { recoverMessageAddress } from "viem";
-import { verifyMessage } from "ethers/lib/utils";
+import { ethers } from "ethers";
 import ky from "ky";
 import Cookie from "js-cookie";
 const apiURL = "https://dev.api.arttribute.io";
@@ -16,7 +16,7 @@ export function SignMessage() {
   const { data, error, isLoading, signMessage } = useSignMessage({
     onSuccess(data, variables) {
       // Verify signature when sign message succeeds
-      const address = verifyMessage(variables.message, data);
+      const address = ethers.verifyMessage(variables.message, data);
       setAddress(address);
       setSignature(data);
     },

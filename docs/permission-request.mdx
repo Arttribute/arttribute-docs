@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 9
 ---
 
 import Tabs from "@theme/Tabs";
@@ -65,7 +65,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/permission-requests",
+    url: "https://dev.api.arttribute.io/v1/permission-requests",
     headers: {
       Authorization: "Bearer eyJhbGciOi...",
     },
@@ -83,7 +83,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'http://localhost:5000/permission-requests' \
+curl --location --request POST 'https://dev.api.arttribute.io/v1/permission-requests' \
 --header 'Authorization: Bearer eyJhbGciOi...' \
 --data '{
     "reference": {

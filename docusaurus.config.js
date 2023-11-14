@@ -87,7 +87,7 @@ const config = {
             label: "Documentation",
           },
           {
-            href: "https://github.com/facebook/docusaurus",
+            href: "https://github.com/Arttribute/arttribute-api",
             label: "GitHub",
             position: "right",
           },
@@ -110,7 +110,7 @@ const config = {
             items: [
               {
                 label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
+                href: "https://stackoverflow.com/questions/tagged/arttribute",
               },
               {
                 label: "Discord",
@@ -131,7 +131,7 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/Arttribute/arttribute-api",
               },
             ],
           },

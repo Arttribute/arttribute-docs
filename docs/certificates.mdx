@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 8
 ---
 
 import Tabs from "@theme/Tabs";
@@ -135,7 +135,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "http://localhost:5000/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
+    url: "https://dev.api.arttribute.io/v1/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer your_access_token",
@@ -155,7 +155,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'http://localhost:5000/certificates/mint/:certificateId' \
+curl --location --request POST 'https://dev.api.arttribute.io/v1/certificates/mint/:certificateId' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer your_access_token' \
 --data '{
@@ -181,7 +181,7 @@ Arttribute offers a plethora of features beyond just creating certificates. This
 
 ### Retrieving a specific certificate
 
-Utilize the `GET /certificates/:id` endpoint to acquire details of a specific certificate. Replace `:id` with the certificate's unique identifier. The response will provide exhaustive information about the certificate.
+Utilize the `GET /v1/certtificates/:id` endpoint to acquire details of a specific certificate. Replace `:id` with the certificate's unique identifier. The response will provide exhaustive information about the certificate.
 
 :::note
 **Auth required:** API Key or Access token

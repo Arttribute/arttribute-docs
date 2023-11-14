@@ -1,0 +1,69 @@
+---
+sidebar_position: 5
+---
+
+# Generating a Project API Key
+
+## What is a Project API Key?
+
+A Project API Key is a unique identifier that is associated with an Arttribute Project. Arttribute uses API Keys to authenticate requests and actions to the platform. This allows you to programmatically interact with your Arttribute Projects, such as uploading new art, creating collections, and selling your art.
+
+To generate a Project API Key, you can use the Arttribute API. The API will provide you with a key that is valid for long periods of time. You can then use this key to access Arttribute resources.
+
+### Step 1: Generating an Access Token
+
+This is a short-lived token that is used to authenticate and authorize actions carried out on the Arttribute platform.
+
+You can follow a step by step process on how to generate an Access Token in the [Generating a User Access Tokens](/generate-access-token) page. If you already have a valid Access Token or have just created one, you are ready for Step 2.
+
+### Step 2: Request for an API Key
+
+Once you have generated an access token, you can request an API Key from Arttribute. To request for a Project API Key, you can use the Arttribute API. Ensure that you have the ID for the project that you would want to create an API Key for.
+
+We've provided code snippets below that demonstrate how to structure your API request.
+
+<!-- import Baseurl from "@site/src/components/reusable/BaseUrl";
+<Baseurl></Baseurl>; -->
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+let projectId = "123e4567-e89b-12d3-a456-426614174000";
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `https://dev.api.arttribute.io/v1/auth/api-key/${projectId}`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'https://dev.api.arttribute.io/v1/auth/api-key/123e4567-e89b-12d3-a456-426614174000' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...'
+```
+
+</TabItem>
+
+</Tabs>
+
+The response contains the API Key required to access resources and perform various actions.

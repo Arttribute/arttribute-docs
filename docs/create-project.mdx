@@ -1,0 +1,96 @@
+---
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Creating a Project
+
+## What is an Arttribute Project?
+
+An Arttribute Project is a represemtation of a user account that allows the user to access other additional features, such as:
+
+- **Creating and Managing API Keys:** With a project, you will be able to create API Keys that are long-lived as opposed to Access Tokens. API Keys allow you to do anything possible by Access Tokens and even more.
+- **Scoping Art and Collections:** Projects are a great way to publicly organize art. They allow you to group both collections and individual art pieces based on any criteria that you choose.
+
+Key features of an Arttribute Project include:
+
+<!-- Table of project attributes-->
+
+| Feature | Description                                   |
+| ------- | --------------------------------------------- |
+| `name`  | A name for the project.                       |
+| `url`   | The URL of the project website or repository. |
+
+<!-- Table ends -->
+
+## How to create an Arttribute Project
+
+### Step 1: Generating an Access Token
+
+This is a short-lived token that is used to authenticate and authorize actions carried out on the Arttribute platform.
+
+You can follow a step by step process on how to generate an Access Token in the [Generating a User Access Tokens](/generate-access-token) page. If you already have a valid Access Token or have just created one, you are ready for Step 2.
+
+### Step 2: Make and API Request
+
+Once you have your Access Token, you can the make a request to create a Project on the Arttribute platform. The request should be in the JSON format and it should include the `name` property and the other properties in the table above.
+
+We've provided code snippets below that demonstrate how to structure your API request.
+
+<!-- import Baseurl from "@site/src/components/reusable/BaseUrl";
+<Baseurl></Baseurl>; -->
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  name: "Pixel Morans",
+  url: "https://pixelmorans.com/",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://dev.api.arttribute.io/v1/projects",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer eyJhbGciOiJIU...",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'https://dev.api.arttribute.io/v1/projects' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIU...' \
+--data '{
+    "name": "Pixel Morans",
+    "url": "https://pixelmorans.com/"
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Step 3: Done
+
+Once you have sent out the request and received a successfull response, your Arttribute Project has been created. You can now use it organize your collections and pieces of art.

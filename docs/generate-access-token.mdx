@@ -14,15 +14,11 @@ A user access token is a digital token that allows a user to access a protected 
 
 To generate a user access token, you can use the Arttribute API. The API will provide you with a token that is valid for a limited period of time. You can then use this token to access Arttribute resources.
 
-### Step 1: Sign an account access message
+### Step 1: Request an authentication message
 
-An account access message is a message that is used to verify your identity and authorize you to access a protected resource. Arttribute uses account access messages to authenticate users and authorize them to perform certain actions, such as generating user access tokens.
+An authentication message is a message that is used to verify your identity and authorize you to access a protected resource. Arttribute uses authentication messages to authenticate users and authorize them to perform certain actions, such as generating user access tokens.
 
-To sign an account access message, you can use your Web3 wallet or a library such as ethers.js. If you are using a library such as ethers.js, you will need to provide the library with your private key.
-
-### Step 2: Request for Access Tokens
-
-Once you have signed an account access message, you can request user access tokens from Arttribute. To request for a user access token, you can use the Arttribute API.
+You'll need to request for a authenticate message from the Arttribute platform. This allows us to verify that it is indeed you signing the message.
 
 We've provided code snippets below that demonstrate how to structure your API request.
 
@@ -37,8 +33,70 @@ We've provided code snippets below that demonstrate how to structure your API re
 const axios = require("axios");
 let data = {
   address: "0x...",
-  message: "Hello world",
-  signature: "",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `https://dev.api.arttribute.io/v1/auth/request`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location 'https://dev.api.arttribute.io/v1/auth/request' \
+--header 'Content-Type: application/json' \
+--data '{
+    "address": "0x..."
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Step 2: Sign the authentication message
+
+To then sign an authentication message, you can use your Web3 wallet or a library such as ethers.js. If you are using a library such as ethers.js, you will need to provide the library with your private key.
+
+[//]: # "// TODO: Insert snippet for how to sign the message on the web, nodejs and maybe cli"
+
+### Step 3: Request for Access Tokens
+
+Once you have signed an authentication message, you can request user access tokens from Arttribute. To request for a user access token, you can use the Arttribute API.
+
+We've provided code snippets below that demonstrate how to structure your API request.
+
+<!-- import Baseurl from "@site/src/components/reusable/BaseUrl";
+<Baseurl></Baseurl>; -->
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+// ...request authentication message
+
+let data = {
+  address: "0x...",
+  message: "...",
+  signature: "...",
 };
 
 axios
@@ -68,8 +126,8 @@ curl --location 'https://dev.api.arttribute.io/v1/auth' \
 --header 'Content-Type: application/json' \
 --data '{
     "address": "0x...",
-    "message": "Hello world",
-    "signature": "",
+    "message": "...",
+    "signature": "..."
 }'
 ```
 

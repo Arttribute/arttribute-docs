@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 ---
 
 import Tabs from "@theme/Tabs";
@@ -41,11 +41,9 @@ Key features of an Arttribute Item include:
 ### Step 1: Obtain your API Key
 
 Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
-Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
 
 ### Step 2: Obtain an access token
 
-The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
 The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
 
 :::tip
@@ -131,10 +129,10 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/items",
+    url: "https://dev.api.arttribute.io/v1/items",
     headers: {
       "x-api-key": "17eoF8...",
-      "Content-Type": "text/plain",
+      "Content-Type": "application/json",
       Authorization: "Bearer eyJhbGciOiJIU...",
     },
     data: JSON.stringify(data),
@@ -152,9 +150,9 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/items' \
+curl --location 'https://dev.api.arttribute.io/v1/items' \
 --header 'x-api-key: 17eo...' \
---header 'Content-Type: text/plain' \
+--header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...' \
 --data '{
     "title": "Eye of the tiger",
@@ -197,7 +195,7 @@ Arttribute provides a range of features beyond creating art items. In this secti
 
 ### Fetching a single item
 
-To retrieve detailed information about a specific art item, you can use the `GET /items/:id` endpoint, where `:id` represents the unique identifier of the item you want to fetch. Here's an example request:
+To retrieve detailed information about a specific art item, you can use the `GET /v1/items/:id` endpoint, where `:id` represents the unique identifier of the item you want to fetch. Here's an example request:
 
 :::note
 **Auth required:** API Key or Access token
@@ -213,7 +211,7 @@ const axios = require("axios");
 let config = {
   method: "get",
   maxBodyLength: Infinity,
-  url: "https://dev.api.arttribute.io/items/:id",
+  url: "https://dev.api.arttribute.io/v1/items/:id",
   headers: {
     Authorization: "Bearer eyJhbGciOi...",
   },
@@ -234,7 +232,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/items/:id' \
+curl --location 'https://dev.api.arttribute.io/v1/items/:id' \
 --header 'Authorization: Bearer eyJhbGc...'
 ```
 
@@ -246,7 +244,7 @@ Replace `:id` with the actual ID of the art item you wish to retrieve. The respo
 
 ### Fetching multiple items
 
-To fetch multiple art items, you can use the `GET /items` endpoint. You can also provide optional query parameters to refine your search by tags or source of the item. You can provide multiple tags separated by commas in the `tags` query parameter and the results will be filtered to match all provided tags.
+To fetch multiple art items, you can use the `GET /v1/items` endpoint. You can also provide optional query parameters to refine your search by tags or source of the item. You can provide multiple tags separated by commas in the `tags` query parameter and the results will be filtered to match all provided tags.
 :::note
 **Auth required:** API Key or Access token
 :::
@@ -265,7 +263,7 @@ axios
   .request({
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/items?tags=cgi,art&source=instagram",
+    url: "https://dev.api.arttribute.io/v1/items?tags=cgi,art&source=instagram",
     headers: {
       Authorization: "Bearer eyJhbGciOiJIUzI...",
     },
@@ -283,7 +281,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/items?tags=cgi%2Cart&source=instagram' \
+curl --location 'https://dev.api.arttribute.io/v1/items?tags=cgi%2Cart&source=instagram' \
 --header 'Authorization: Bearer eyJhbGciOiJI...'
 ```
 
@@ -295,7 +293,7 @@ This request will retrieve art items tagged with "cgi" and "art" that are associ
 
 ### Updating an item
 
-To update the details of an existing art item, use the `PATCH /items/:id` endpoint. You'll need the item's unique ID for this operation. In your request, provide a JSON object containing only the fields to update and their new values. The following fields of an [item object](#arttribute-items) can be changed: `title`, `description`, `tags`, `author`, `source`, `license`, `price`, `needsRequest`
+To update the details of an existing art item, use the `PATCH /v1/items/:id` endpoint. You'll need the item's unique ID for this operation. In your request, provide a JSON object containing only the fields to update and their new values. The following fields of an [item object](#arttribute-items) can be changed: `title`, `description`, `tags`, `author`, `source`, `license`, `price`, `needsRequest`
 
 :::note
 **Auth required:** API Key or Access token or both
@@ -319,7 +317,7 @@ axios
   .request({
     method: "patch",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/items/:id",
+    url: "https://dev.api.arttribute.io/v1/items/:id",
     headers: {
       "x-api-key": "17eoF8wk...",
       "Content-Type": "application/json",
@@ -340,7 +338,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a PATCH request with cURL"
-curl --location --request PATCH 'https://dev.api.arttribute.io/items/:id' \
+curl --location --request PATCH 'https://dev.api.arttribute.io/v1/items/:id' \
 --header 'x-api-key: 17eoF8wk...' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
@@ -364,7 +362,7 @@ To successfully update an art item, the provided id **must** be item owned by th
 
 ### Deleting an item
 
-If you wish to remove an art item from Arttribute, you can do so using the DELETE /items/:id endpoint. As with updates, you'll need the item's unique ID for deletion. Be aware that deleting an item is a permanent action, so use caution.
+If you wish to remove an art item from Arttribute, you can do so using the DELETE /v1/items/:id endpoint. As with updates, you'll need the item's unique ID for deletion. Be aware that deleting an item is a permanent action, so use caution.
 
 :::note
 **Auth required:** API Key or Access token or both
@@ -381,7 +379,7 @@ axios
   .request({
     method: "delete",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/items/:id",
+    url: "https://dev.api.arttribute.io/v1/items/:id",
     headers: {
       Authorization: "Bearer eyJhbGciO...",
     },
@@ -399,7 +397,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a DELETE request with cURL"
-curl --location --request DELETE 'https://dev.api.arttribute.io/items/:id' \
+curl --location --request DELETE 'https://dev.api.arttribute.io/v1/items/:id' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...'
 ```
 

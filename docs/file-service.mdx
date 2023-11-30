@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 12
 ---
 
 import Tabs from "@theme/Tabs";
@@ -9,7 +9,7 @@ import TabItem from "@theme/TabItem";
 
 Arttribute's File Service is a powerful tool that allows you to upload files and receive a base64 data URL in return. This service simplifies the process of adding files to your Arttribute items.
 
-The service is available through the endpoint `POST /file/upoload` and accepts `Content-Type: multipart/form-data`
+The service is available through the endpoint `POST /v1/file/upoload` and accepts `Content-Type: multipart/form-data`
 
 #### Request Body
 
@@ -34,7 +34,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/file/upload",
+    url: "https://dev.api.arttribute.io/v1/file/upload",
     headers: {
       ...data.getHeaders(),
     },
@@ -53,7 +53,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/file/upload' \
+curl --location 'https://dev.api.arttribute.io/v1/file/upload' \
 --form 'file=@"Bf6oIsJsk/photo.png"'
 ```
 

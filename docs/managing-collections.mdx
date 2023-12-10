@@ -40,11 +40,11 @@ Key features of an Arttribute Collection include:
 
 ### Step 1: Obtain your API Key
 
-Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-access-token)
 
 ### Step 2: Obtain an access token
 
-The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
+The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-access-token#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
 
 :::tip
 Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
@@ -372,7 +372,7 @@ curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:
 </Tabs>
 
 :::caution
-To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
+To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
 :::
 
 ### Deleting a collection
@@ -423,5 +423,5 @@ curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:
 </Tabs>
 
 :::caution
-To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
+To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
 :::

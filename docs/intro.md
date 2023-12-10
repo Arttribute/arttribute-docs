@@ -27,4 +27,4 @@ Welcome to the Arttribute developer documentation. Arttribute aims to empower ar
 
 ## Getting Started
 
-1. ** Create an Account on Arttribute**: Before diving deep, you'll need to create your Arttribute account. See [Creating a user Account](./create-user).
+1. ** Create an Account on Arttribute**: Before diving deep, you'll need to create your Arttribute account. See [Generating a User Access Token](./generate-access-token).

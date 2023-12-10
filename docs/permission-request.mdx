@@ -65,7 +65,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/permission-requests",
+    url: "https://api.arttribute.io/v1/permission-requests",
     headers: {
       Authorization: "Bearer eyJhbGciOi...",
     },
@@ -83,7 +83,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'https://dev.api.arttribute.io/v1/permission-requests' \
+curl --location --request POST 'https://api.arttribute.io/v1/permission-requests' \
 --header 'Authorization: Bearer eyJhbGciOi...' \
 --data '{
     "reference": {

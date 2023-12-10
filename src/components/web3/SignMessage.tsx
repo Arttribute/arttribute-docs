@@ -3,7 +3,7 @@ import { useSignMessage } from "wagmi";
 import { ethers } from "ethers";
 import ky from "ky";
 import Cookie from "js-cookie";
-const apiURL = "https://dev.api.arttribute.io";
+const apiURL = "https://api.arttribute.io";
 
 export function SignMessage() {
   const [address, setAddress] = useState("");

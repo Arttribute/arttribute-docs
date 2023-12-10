@@ -73,7 +73,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/payments", //TODO: Change this to API base url variable
+    url: "https://api.arttribute.io/v1/payments", //TODO: Change this to API base url variable
     headers: {
       "x-api-key": "YourAPIKey",
       "Content-Type": "application/json",
@@ -93,7 +93,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/payments' \
+curl --location 'https://api.arttribute.io/v1/payments' \
 --header 'x-api-key: YourAPIKey' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer YourAccessToken' \

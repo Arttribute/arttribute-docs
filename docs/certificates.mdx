@@ -135,7 +135,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
+    url: "https://api.arttribute.io/v1/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer your_access_token",
@@ -155,7 +155,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'https://dev.api.arttribute.io/v1/certificates/mint/:certificateId' \
+curl --location --request POST 'https://api.arttribute.io/v1/certificates/mint/:certificateId' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer your_access_token' \
 --data '{

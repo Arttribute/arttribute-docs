@@ -129,7 +129,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/items",
+    url: "https://api.arttribute.io/v1/items",
     headers: {
       "x-api-key": "17eoF8...",
       "Content-Type": "application/json",
@@ -150,7 +150,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/items' \
+curl --location 'https://api.arttribute.io/v1/items' \
 --header 'x-api-key: 17eo...' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...' \
@@ -211,7 +211,7 @@ const axios = require("axios");
 let config = {
   method: "get",
   maxBodyLength: Infinity,
-  url: "https://dev.api.arttribute.io/v1/items/:id",
+  url: "https://api.arttribute.io/v1/items/:id",
   headers: {
     Authorization: "Bearer eyJhbGciOi...",
   },
@@ -232,7 +232,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/items/:id' \
+curl --location 'https://api.arttribute.io/v1/items/:id' \
 --header 'Authorization: Bearer eyJhbGc...'
 ```
 
@@ -263,7 +263,7 @@ axios
   .request({
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/items?tags=cgi,art&source=instagram",
+    url: "https://api.arttribute.io/v1/items?tags=cgi,art&source=instagram",
     headers: {
       Authorization: "Bearer eyJhbGciOiJIUzI...",
     },
@@ -281,7 +281,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/items?tags=cgi%2Cart&source=instagram' \
+curl --location 'https://api.arttribute.io/v1/items?tags=cgi%2Cart&source=instagram' \
 --header 'Authorization: Bearer eyJhbGciOiJI...'
 ```
 
@@ -317,7 +317,7 @@ axios
   .request({
     method: "patch",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/items/:id",
+    url: "https://api.arttribute.io/v1/items/:id",
     headers: {
       "x-api-key": "17eoF8wk...",
       "Content-Type": "application/json",
@@ -338,7 +338,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a PATCH request with cURL"
-curl --location --request PATCH 'https://dev.api.arttribute.io/v1/items/:id' \
+curl --location --request PATCH 'https://api.arttribute.io/v1/items/:id' \
 --header 'x-api-key: 17eoF8wk...' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
@@ -379,7 +379,7 @@ axios
   .request({
     method: "delete",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/items/:id",
+    url: "https://api.arttribute.io/v1/items/:id",
     headers: {
       Authorization: "Bearer eyJhbGciO...",
     },
@@ -397,7 +397,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a DELETE request with cURL"
-curl --location --request DELETE 'https://dev.api.arttribute.io/v1/items/:id' \
+curl --location --request DELETE 'https://api.arttribute.io/v1/items/:id' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...'
 ```
 

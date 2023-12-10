@@ -42,7 +42,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: `https://dev.api.arttribute.io/v1/auth/api-key/${projectId}`,
+    url: `https://api.arttribute.io/v1/auth/api-key/${projectId}`,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer eyJhbGciOiJIU...",
@@ -61,7 +61,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/auth/api-key/123e4567-e89b-12d3-a456-426614174000' \
+curl --location 'https://api.arttribute.io/v1/auth/api-key/123e4567-e89b-12d3-a456-426614174000' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...'
 ```

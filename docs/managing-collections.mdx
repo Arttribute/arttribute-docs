@@ -40,11 +40,11 @@ Key features of an Arttribute Collection include:
 
 ### Step 1: Obtain your API Key
 
-Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-keys)
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-access-token)
 
 ### Step 2: Obtain an access token
 
-The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-keys#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
+The collections resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art collections. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-access-token#generating-user-access-tokens). If an access token is not provided, the collection will be added under the account of the user who generated the API Key provided
 
 :::tip
 Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
@@ -76,7 +76,7 @@ let data = {
 axios
   .request({
     method: "post",
-    url: "https://dev.api.arttribute.io/v1/collections", //TODO: Change this to API base url variable
+    url: "https://api.arttribute.io/v1/collections", //TODO: Change this to API base url variable
     headers: {
       "x-api-key": "17eoF8...",
       "Content-Type": "application/json",
@@ -97,7 +97,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/collections' \
+curl --location 'https://api.arttribute.io/v1/collections' \
 --header 'x-api-key: 17eo...' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...' \
@@ -145,7 +145,7 @@ const axios = require("axios");
 let config = {
   method: "get",
   maxBodyLength: Infinity,
-  url: "https://dev.api.arttribute.io/v1/collections/:id", //TODO: Change to url var
+  url: "https://api.arttribute.io/v1/collections/:id", //TODO: Change to url var
 };
 
 axios
@@ -165,7 +165,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/collections/:id'
+curl --location 'https://api.arttribute.io/v1/collections/:id'
 ```
 
 </TabItem>
@@ -189,7 +189,7 @@ axios
   .request({
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/collections",
+    url: "https://api.arttribute.io/v1/collections",
   })
   .then((response) => {
     console.log(JSON.stringify(response.data));
@@ -206,7 +206,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a GET request with cURL"
-curl --location 'https://dev.api.arttribute.io/v1/collections'
+curl --location 'https://api.arttribute.io/v1/collections'
 ```
 
 </TabItem>
@@ -241,7 +241,7 @@ axios
   .request({
     method: "patch",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/collections/:id",
+    url: "https://api.arttribute.io/v1/collections/:id",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer eyJhbGciOiJIU...",
@@ -263,7 +263,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a PATCH request with cURL"
-curl --location --request PATCH 'https://dev.api.arttribute.io/v1/collections/:id' \
+curl --location --request PATCH 'https://api.arttribute.io/v1/collections/:id' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
 --data '{
@@ -293,7 +293,7 @@ axios
   .request({
     method: "patch",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/collections/:id/items",
+    url: "https://api.arttribute.io/v1/collections/:id/items",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer eyJhbGciOiJIU...",
@@ -315,7 +315,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a PATCH request with cURL"
-curl --location --request PATCH 'https://dev.api.arttribute.io/v1/collections/:id/items' \
+curl --location --request PATCH 'https://api.arttribute.io/v1/collections/:id/items' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
 --data '{
@@ -342,7 +342,7 @@ axios
   .request({
     method: "delete",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/collections/:id/items/:itemId",
+    url: "https://api.arttribute.io/v1/collections/:id/items/:itemId",
     headers: {
       Authorization: "Bearer eyJhbGciOiJIU...",
     },
@@ -363,7 +363,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a DELETE request with cURL"
-curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:id/items/:itemId' \
+curl --location --request DELETE 'https://api.arttribute.io/v1/collections/:id/items/:itemId' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1N...' \
 ```
 
@@ -372,7 +372,7 @@ curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:
 </Tabs>
 
 :::caution
-To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
+To successfully update a collection, the provided id **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
 :::
 
 ### Deleting a collection
@@ -394,7 +394,7 @@ axios
   .request({
     method: "delete",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/collections/:id", //TODO: Change to variable
+    url: "https://api.arttribute.io/v1/collections/:id", //TODO: Change to variable
     headers: {
       Authorization: "Bearer eyJhbGciO...",
     },
@@ -414,7 +414,7 @@ axios
 <!-- TODO: change to url variable  -->
 
 ```bash title="Making a DELETE request with cURL"
-curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:id' \
+curl --location --request DELETE 'https://api.arttribute.io/v1/collections/:id' \
 --header 'Authorization: Bearer eyJhbGciOiJIU...'
 ```
 
@@ -423,5 +423,5 @@ curl --location --request DELETE 'https://dev.api.arttribute.io/v1/collections/:
 </Tabs>
 
 :::caution
-To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-keys#generating-user-access-tokens)
+To successfully delete a collection, the provided ID **must** be owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
 :::

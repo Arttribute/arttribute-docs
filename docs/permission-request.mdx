@@ -37,7 +37,7 @@ Key features of a Permission Request include:
 
 ### Step 1: Authenticate as a User
 
-To create a permission request, you first need to be authenticated as a registered Arttribute user. This ensures that both the sender and receiver identities are verified within the platform. The authentication can be done using [Arttribute's authentication mechanism](/generate-keys).
+To create a permission request, you first need to be authenticated as a registered Arttribute user. This ensures that both the sender and receiver identities are verified within the platform. The authentication can be done using [Arttribute's authentication mechanism](/generate-access-token).
 
 ### Step 2: Identify the Desired Item or Collection
 
@@ -65,7 +65,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/permission-requests",
+    url: "https://api.arttribute.io/v1/permission-requests",
     headers: {
       Authorization: "Bearer eyJhbGciOi...",
     },
@@ -83,7 +83,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'https://dev.api.arttribute.io/v1/permission-requests' \
+curl --location --request POST 'https://api.arttribute.io/v1/permission-requests' \
 --header 'Authorization: Bearer eyJhbGciOi...' \
 --data '{
     "reference": {

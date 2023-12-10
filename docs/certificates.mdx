@@ -35,7 +35,7 @@ Key features of an Arttribute Certificate include:
 
 ### Step 1: Obtain an access token
 
-Creating a certificate requires an access token to identify the user on whose behalf the application is working. Ensure the user is registered on Arttribute with a wallet. See the process for [Generating access tokens](/generate-keys#generating-user-access-tokens).
+Creating a certificate requires an access token to identify the user on whose behalf the application is working. Ensure the user is registered on Arttribute with a wallet. See the process for [Generating access tokens](/generate-access-token#generating-user-access-tokens).
 
 :::tip
 To authenticate a user, prompt them to sign a message using a wallet registered under Arttribute. This step confirms the user's identity and generates an access token for subsequent requests.
@@ -135,7 +135,7 @@ axios
   .request({
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://dev.api.arttribute.io/v1/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
+    url: "https://api.arttribute.io/v1/certificates/mint/:certificateId", // Replace with actual API URL and certificate ID
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer your_access_token",
@@ -155,7 +155,7 @@ axios
 <TabItem value="curl" label="cURL">
 
 ```bash title="Making a POST request with cURL"
-curl --location --request POST 'https://dev.api.arttribute.io/v1/certificates/mint/:certificateId' \
+curl --location --request POST 'https://api.arttribute.io/v1/certificates/mint/:certificateId' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer your_access_token' \
 --data '{

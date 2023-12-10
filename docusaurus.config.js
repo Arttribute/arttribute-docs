@@ -52,8 +52,7 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl: "https://github.com/Arttribute/arttribute-api",
         },
         blog: false,
         theme: {
@@ -75,10 +74,10 @@ const config = {
       },
       navbar: {
         title: "Arttribute",
-        // logo: {
-        //   alt: "My Site Logo",
-        //   src: "img/logo.svg",
-        // },
+        logo: {
+          alt: "My Site Logo",
+          src: "img/logo.svg",
+        },
         items: [
           {
             type: "docSidebar",
@@ -108,13 +107,13 @@ const config = {
           {
             title: "Community",
             items: [
-              {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/arttribute",
-              },
+              // {
+              //   label: "Stack Overflow",
+              //   href: "https://stackoverflow.com/questions/tagged/arttribute",
+              // },
               {
                 label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
+                href: "https://discord.gg/SUqUn5XhkP",
               },
               {
                 label: "Twitter",

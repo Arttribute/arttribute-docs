@@ -1,0 +1,87 @@
+---
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Attributions
+
+## What is an Attribution?
+
+Attribution in Arttribute ensures that artists get proper credit when their work is used in AI. It is a core component that tracks and verifies the use of artworks according to the terms defined by the artist.
+
+Key features of an Attribution include:
+
+<!-- Table of attribution attributes -->
+
+| Feature        | Description                                            |
+| -------------- | ------------------------------------------------------ |
+| `id`           | Unique Identifier of an attribution.                   |
+| `attributorId` | ID of the user who made this attribution.              |
+| `artifactId`   | ID of the artifact being attributed.                   |
+| `collectionId` | ID of the collection being attributed.                 |
+| `createdAt`    | When the attribution was created (ISO 8601 timestamp). |
+
+<!-- Table ends -->
+
+---
+
+## Making an Attribution
+
+### Step 1: Prepare the Attribution Data
+
+Before making an attribution, gather all necessary information, including the artifact ID, the terms accepted, and the attributor's details.
+
+### Step 2: Make API request
+
+With your attribution data ready, you can begin the attribution creation process. Below are code snippets illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  artifactId: "id-string",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute.io/v2/attributions",
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address,
+      "x-authentication-message": message,
+      "x-authentication-signature": signature,
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'https://api.arttribute.io/v2/attributions' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '{
+    artifactId: "id-string",
+}'
+```
+
+</TabItem>
+</Tabs>

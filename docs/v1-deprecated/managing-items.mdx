@@ -40,11 +40,11 @@ Key features of an Arttribute Item include:
 
 ### Step 1: Obtain your API Key
 
-Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the [Generating Keys section](/generate-access-token)
+Before you can integrate this functionality into your application, you'll need an API key. This key is essential for authenticating your requests and gaining access to the Arttribute's features. To obtain an API key, follow the steps in the Generating Keys section
 
 ### Step 2: Obtain an access token
 
-The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to [Generating access tokens](/generate-access-token#generating-user-access-tokens). If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
+The items resource of the Arttribute API requires an access token to identify the user on whose behalf the application is creating or interacting with art items. This user should be an Arttribute user and should have a registered wallet. See how to Generating access tokens. If an access token is not provided, the item will be added under the account of the user who generated the API Key provided
 
 :::tip
 Prompt the user to sign a message with a wallet registered under Arttribute. This process authenticates the user and generates an access token that your application can use for subsequent requests.
@@ -58,8 +58,8 @@ With your API key and access token in hand, you can start make a request to add 
 
 Before making the actual API request, you must prepare the art item's file by encoding it into base64 format. Here are 2 available options:
 
-- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our [File service](/file-service).
-- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our [File service](/file-service).
+- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our File service.
+- **Data URL Format:** You can use a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs). A data URL is a base64-encoded string prepended with the encoding type (base64) and MIME type of the file. The MIME type is included within the data URL itself, making it a self-contained format. This is a convenient way to provide the file and its associated information in one string and is the preferred option. This can be done through a libraries of the language of your choice or, alternatively, by using our File service.
 - **Raw Base64 Format:** Alternatively, you can provide the raw base64 string after converting the file, without the MIME type and encoding format prepended to it. With this option, you have to additionally provide the MIME type when making the actual request.
 
 #### Making the actual request
@@ -357,7 +357,7 @@ curl --location --request PATCH 'https://api.arttribute.io/v1/items/:id' \
 Replace :id with the actual ID of the art item you wish to update
 
 :::caution
-To successfully update an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
+To successfully update an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check how to generate user access tokens.
 :::
 
 ### Deleting an item
@@ -406,6 +406,6 @@ curl --location --request DELETE 'https://api.arttribute.io/v1/items/:id' \
 </Tabs>
 
 :::caution
-To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
-To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check [how to generate user access tokens.](/generate-access-token#generating-user-access-tokens)
+To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check how to generate user access tokens.
+To successfully delete an art item, the provided id **must** be item owned by the user making the request. The user is determined by the Access token. If no token is provided, the user will be resolved to the user who generated the API Key provided. To learn how to make a delete request on behalf of another user, check how to generate user access tokens.
 :::

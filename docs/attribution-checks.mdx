@@ -1,0 +1,70 @@
+---
+sidebar_position: 5
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+# Attribution Checks
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = [
+  {
+    asset: {
+      data: "data:image/png;base64,...", // Data URL of the image
+      mimetype: "image/png",
+    },
+  },
+];
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute.io/v2/artifacts/check",
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address,
+      "x-authentication-message": message,
+      "x-authentication-signature": signature,
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'https://api.arttribute.io/v2/artifacts/check' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '[
+  {
+    "asset": {
+      "data": "data:image/png;base64,...", // Data URL of the image
+      "mimetype": "image/png"
+    }
+  }
+]'
+
+```
+
+</TabItem>
+
+</Tabs>

@@ -13,7 +13,7 @@ slug: /
 
 ## Welcome to Arttribute
 
-Welcome to the Arttribute developer documentation. Arttribute aims to empower artists while providing an ethical and transparent way for AI enthusiasts and practitioners to use artwork for generative AI applocations.
+Welcome to the Arttribute developer documentation. Arttribute aims to empower artists while providing an ethical and transparent way for AI enthusiasts and practitioners to use artwork for generative AI applications.
 
 ## Core Components
 
@@ -43,7 +43,7 @@ Here is an image that provides an overview of how it all works:
 
 ### Training Fine tuned models
 
-The following example shows the defferent scenarios under which the training of an AI model based on artists' artwork can be accepted or rejected.
+The following example shows the different scenarios under which the training of an AI model based on artists' artwork can be accepted or rejected.
 
 #### Approval scenarios
 

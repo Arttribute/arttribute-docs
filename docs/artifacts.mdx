@@ -317,7 +317,6 @@ axios
     method: "delete",
     url: `https://api.arttribute.io/v2/artifacts/${id}`,
     headers: {
-      "Content-Type": "application/json",
       "x-authentication-address": address, // web3 wallet address
       "x-authentication-message": message,
       "x-authentication-signature": signature, // signature of the message
@@ -337,7 +336,6 @@ axios
 
 ```bash title="Making a DELETE request with cURL"
 curl --location --request DELETE 'https://api.arttribute.io/v2/artifacts/{id}' \
---header 'Content-Type: application/json' \
 --header 'x-authentication-address: address' \
 --header 'x-authentication-message: message' \
 --header 'x-authentication-signature: signature'

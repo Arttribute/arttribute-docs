@@ -7,3 +7,439 @@ import TabItem from "@theme/TabItem";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 # Collections
+
+## What is an Arttribute Collection?
+
+A collection is a group of artifacts that share a common theme or purpose. Collections can be created by users to organize their artifacts and make them easier to manage. Users can create, update, and delete collections using the Arttribute API. To ensure authenticity and fairness, collections are tagged with [Arttribute Licenses](./licenses).
+
+Key features of a collection include:
+
+<!-- Table of collection attributes -->
+
+| Feature     | Description                                                |
+| ----------- | ---------------------------------------------------------- |
+| `id`        | Unique identifier of a collection.                         |
+| `creatorId` | ID of the user who created this collection.                |
+| `name`      | Name of the collection.                                    |
+| `license`   | License associated with the collection.                    |
+| `whitelist` | List of addresses that can access the collection.          |
+| `blacklist` | List of addresses that cannot access the collection.       |
+| `createdAt` | When the collection was created (ISO 8601 timestamp).      |
+| `updatedAt` | When the collection was last updated (ISO 8601 timestamp). |
+
+---
+
+<!-- Table ends -->
+
+## Creating a Collection
+
+### Step 1: Prepare the Collection Data
+
+:::info
+The user must provide authorization tokens to create a collection. This process ensures that the user is authenticated and authorized to create collections.
+:::
+
+Before creating an collection, gather all necessary information. The data object is described below:
+
+| Feature   | Description                                                          |
+| --------- | -------------------------------------------------------------------- |
+| `name`    | Name of the collection.                                              |
+| `license` | "Open" / "Exclusive" / "Non-Commercial" / "Exclusive Non-Commercial" |
+
+### Step 2: Make API request
+
+With the collection data ready, you can begin the collection creation process. Below are code snippets illustrating how to structure your API request.
+
+:::tip
+Prompt the user to sign a message with an onchain identity like a web3 wallet. This process authenticates the user and generates an access token that your application can use for subsequent requests.
+:::
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  name: "Digital Painting",
+  description: "A beautiful digital painting.",
+  asset: {
+    data: "data:image/png;base64,...", // Data URL of the image
+    mimetype: "image/png",
+  },
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute.io/v2/collections",
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'https://api.arttribute.io/v2/collections' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '{
+  "name": "Digital Painting",
+  "description": "A beautiful digital painting.",
+  "asset": {
+    "data": "data:image/png;base64,...", // Data URL of the image
+    "mimetype": "image/png"
+  }
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Step 3: Add artifacts to the collection
+
+To add an artifact to a collection, make a POST request to the `/collections/{collectionId}/items` endpoint. Below is an example of how to add an artifact to a collection using the Arttribute API. The data object is an array of artifact IDs that you want to add to the collection. This is shown in the example below.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = [{ itemId: "artifactId1" }, { itemId: "artifactId2" }];
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `https://api.arttribute.io/v2/collections/${collectionId}/items`,
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl --location --request POST 'https://api.arttribute.io/v2/collections/{collectionId}/items' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '[
+  { "itemId": "artifactId1" },
+  { "itemId": "artifactId2" }
+]'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Exploring Additional Functionality
+
+Arttribute provides a range of features beyond creating collections and adding artifacts to them. In this section, we'll walk you through how to:
+
+- Fetch information about a Collection
+- Update a Collection
+- Delete a Collection
+- Dealing with Items in a Collection
+
+## Fetching Collections
+
+### Collection by ID
+
+To retrieve a specific collection, make a GET request to the `/collection/{id}` endpoint. Below is an example of how to fetch a specific collection using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/collections/${id}`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns the collection with the specified ID
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/collections/{id}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Collections by Creator
+
+To retrieve all collections created by a specific user, make a GET request to the `/users/{creatorId}/collections` endpoint. Below is an example of how to fetch all collections created by a specific user using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/users/${creatorId}/collections`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns an array of collections created by the specified user
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/users/{creatorId}/collections'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Items in a Collection
+
+To retrieve all items in a specific collection, make a GET request to the `/collections/{collectionId}/items` endpoint. Below is an example of how to fetch all items in a specific collection using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/collections/${collectionId}/items`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns an array of items in the specified collection
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/collections/{collectionId}/items'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Updating Collections
+
+### Step 1: Prepare the Collection Data
+
+Before updating an collection, gather all necessary information. The fields available for updating an collection are:
+
+| Feature     | Description                                                          |
+| ----------- | -------------------------------------------------------------------- |
+| `name`      | Name of the collection.                                              |
+| `license`   | "Open" / "Exclusive" / "Non-Commercial" / "Exclusive Non-Commercial" |
+| `whitelist` | List of `string` addresses that can access the collection.           |
+| `blacklist` | List of `string` addresses that cannot access the collection.        |
+
+### Step 2: Make API request
+
+With the collection data ready, you can begin the collection update process. Below are code snippets illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  name: "Digital Painting",
+  license: "Open",
+  whitelist: ["0x1234", "0x5678"],
+  blacklist: ["0x9876"],
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: `https://api.arttribute.io/v2/collections/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH 'https://api.arttribute.io/v2/collections/{id}' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '{
+  "name": "Digital Painting",
+  "license": "Open",
+  "whitelist": ["0x1234", "0x5678"],
+  "blacklist": ["0x9876"]
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Deleting Collection data
+
+### Removing an Item from a Collection
+
+To remove an item from a collection, make a DELETE request to the `/collections/{collectionId}/items/{itemId}` endpoint. Below is an example of how to remove an item from a collection using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    url: `https://api.arttribute.io/v2/collections/${collectionId}/items/${itemId}`,
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'https://api.arttribute.io/v2/collections/{collectionId}/items/{itemId}' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Deleting a Collection
+
+To delete a collection, make a DELETE request to the `/collections/{id}` endpoint. Below is an example of how to delete a collection using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    url: `https://api.arttribute.io/v2/collections/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'https://api.arttribute.io/v2/collections/{id}' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature'
+```
+
+</TabItem>
+
+</Tabs>

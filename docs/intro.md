@@ -19,7 +19,7 @@ Welcome to the Arttribute developer documentation. Arttribute aims to empower ar
 
 - **[Artifacts](./artifacts)**: Individual pieces of artwork uploaded by artists with specific terms.
 - **[Attributions](./attributions)**: Acknowledgments that ensure artists receive due credit and in compliance with the set terms
-- **[Code-enfoeceable Licenses](./licences)**: A simple standard way to grant permissions for the use of art in AI.
+- **[Code-enforceable Licenses](./licenses)**: A simple standard way to grant permissions for the use of art in AI.
 - **[Collections](./collections)**: Group of artifacts created by an artists licensed under the same terms.
 
 ## An overview of how it works

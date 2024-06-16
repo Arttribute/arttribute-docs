@@ -8,6 +8,16 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 # Attribution Checks
 
+## What are Arttribute Attribution Checks?
+
+Arttribute Attribution Checks are a way to verify the authenticity of an artwork and its creator. By submitting an artwork to the Arttribute API, you can verify the creator of the artwork and the authenticity of the artwork itself. This can be useful for verifying the creator of an artwork, ensuring that the creator is credited for their work, and preventing plagiarism.
+
+The Arttribute API provides a simple way to submit an artwork for attribution checks. You can submit an artwork in the form of a data URL in base64 format, and the API will return the creator of the artwork and the authenticity of the artwork using its sophisticated built-in image search API utlizing vector space analysis.
+
+## How to use Arttribute Attribution Checks
+
+To use Arttribute Attribution Checks, you need to make a POST request to the Arttribute API with the data URL of the image in base64 format. This is shown in the example below:
+
 <Tabs>
 
 <TabItem value="nodejs" label="NodeJS">

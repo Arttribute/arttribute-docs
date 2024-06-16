@@ -10,7 +10,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 ## What is an Attribution?
 
-Attribution in Arttribute ensures that artists get proper credit when their work is used in AI. It is a core component that tracks and verifies the use of artworks according to the terms defined by the artist.
+Attributions in Arttribute ensure that artists get proper credit when their work is used in AI. It is a core component that tracks and verifies the use of artworks according to the terms defined by the artist.
 
 Key features of an Attribution include:
 
@@ -22,7 +22,12 @@ Key features of an Attribution include:
 | `attributorId` | ID of the user who made this attribution.              |
 | `artifactId`   | ID of the artifact being attributed.                   |
 | `collectionId` | ID of the collection being attributed.                 |
+| `isValid`      | Whether the attribution is valid.                      |
 | `createdAt`    | When the attribution was created (ISO 8601 timestamp). |
+| `updatedAt`    | When the attribution was last updated.                 |
+| `expiresAt`    | When the attribution expires (ISO 8601 timestamp).     |
+
+Either `artifactId` or `collectionId` will be present in an attribution, but not both.
 
 <!-- Table ends -->
 
@@ -32,7 +37,7 @@ Key features of an Attribution include:
 
 ### Step 1: Prepare the Attribution Data
 
-Before making an attribution, gather all necessary information, including the artifact ID, the terms accepted, and the attributor's details.
+Before making an attribution, gather all necessary information, including the artifact ID or the collection ID (depending on what resource is being attributed), the terms accepted, and the attributor's details.
 
 ### Step 2: Make API request
 
@@ -42,7 +47,7 @@ With your attribution data ready, you can begin the attribution creation process
 
 <TabItem value="nodejs" label="NodeJS">
 
-```js title="Making a Node JS request with axios"
+```js title="Making a Node JS request with axios for artifact attribution"
 const axios = require("axios");
 let data = {
   artifactId: "id-string",
@@ -69,19 +74,228 @@ axios
   });
 ```
 
+```js title="Making a Node JS request with axios for collection attribution"
+const axios = require("axios");
+let data = {
+  collectionId: "id-string",
+};
+
+axios
+  .request({
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api.arttribute.io/v2/attributions",
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address,
+      "x-authentication-message": message,
+      "x-authentication-signature": signature,
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```bash title="Making a POST request with cURL"
+```bash title="Making a POST request with cURL for artifact attribution"
 curl --location --request POST 'https://api.arttribute.io/v2/attributions' \
 --header 'Content-Type: application/json' \
 --header 'x-authentication-address: address' \
 --header 'x-authentication-message: message' \
 --header 'x-authentication-signature: signature' \
 --data '{
-    artifactId: "id-string",
+  "artifactId": "id-string"
+}'
+```
+
+```bash title="Making a POST request with cURL for collection attribution"
+curl --location --request POST 'https://api.arttribute.io/v2/attributions' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '{
+  "collectionId": "id-string"
 }'
 ```
 
 </TabItem>
+</Tabs>
+
+## Retrieving Attributions
+
+### Retrieving Attributions by ID
+
+To retrieve an attribution by its ID, make a GET request to the `/attributions/:id` endpoint. Below is a code snippet illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/attributions/${id}`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a GET request with cURL"
+curl 'https://api.arttribute.io/v2/attributions/id'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Retrieving Attributions by User ID
+
+To retrieve attributions by a user ID, make a GET request to the `/users/:id/attributions` endpoint. Below is a code snippet illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/users/${id}/attributions`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a GET request with cURL"
+curl 'https://api.arttribute.io/v2/users/id/attributions'
+```
+
+</TabItem>
+
+</Tabs>
+
+You can filter this down further to retrieve attributions for specifically artifacts or collections by adding the `artifactId` or `collectionId`.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios to get attributions for a specific artifact by a user"
+const axios = require("axios");
+
+axios
+  .get(
+    `https://api.arttribute.io/v2/users/${userId}/attributions/artifact/${artifactId}`
+  )
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+```js title="Making a Node JS request with axios to get attributions for a specific collection by a user"
+const axios = require("axios");
+
+axios
+  .get(
+    `https://api.arttribute.io/v2/users/${userId}/attributions/collection/${collectionId}`
+  )
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a GET request with cURL to get attributions for a specific artifact by a user"
+curl 'https://api.arttribute.io/v2/users/userId/attributions/artifact/artifactId'
+```
+
+```bash title="Making a GET request with cURL to get attributions for a specific collection by a user"
+curl 'https://api.arttribute.io/v2/users/userId/attributions/collection/collectionId'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Updating an Attribution
+
+:::info
+Under construction🚧
+:::
+
+## Deleting an Attribution
+
+To delete an attribution, make a DELETE request to the `/attributions/:id` endpoint. Below is a code snippet illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    url: `https://api.arttribute.io/v2/attributions/${id}`,
+    headers: {
+      "x-authentication-address": address,
+      "x-authentication-message": message,
+      "x-authentication-signature": signature,
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a DELETE request with cURL"
+
+curl --location --request DELETE 'https://api.arttribute.io/v2/attributions/id' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature'
+```
+
+</TabItem>
+
 </Tabs>

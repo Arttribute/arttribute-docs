@@ -8,33 +8,45 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 # Artifacts
 
-## What is an Arttribute Arifact?
+## What is an Arttribute Artifact?
 
-An Artifact is a fundamental concept within Arttribute. It represents a piece of artwork, whether it's a painting, digital illustration, or any other form of artistic creation that can be made digitally accessible. Arttribute Items serve as the core units for artists and creators.
+An Artifact is a fundamental concept within Arttribute. It represents a piece of artwork, whether it's a painting, digital illustration, or any other form of artistic creation that can be made digitally accessible. Arttribute Items serve as the core units for artists and creators. To ensure authenticity and fairness, artifacts are tagged with [Arttribute Licenses](./licenses).
 
 Key features of an Artifact include:
 
 <!-- Table of artifact attributes -->
 
-| Feature       | Description                                         |
-| ------------- | --------------------------------------------------- |
-| `id`          | Unique Identifier of an artifact.                   |
-| `creatorId`   | ID of the user who created this artifact.           |
-| `name`        | Name of the artifact.                               |
-| `description` | A brief description of the artifact.                |
-| `asset`       | Data URL of the artifact's digital asset.           |
-| `imageUrl`    | Public URL of the artifact's image.                 |
-| `created`     | When the artifact was created (ISO 8601 timestamp). |
-
-<!-- Table ends -->
+| Feature     | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| `id`        | Unique identifier of an artifact.                        |
+| `creatorId` | ID of the user who created this artifact.                |
+| `name`      | Name of the artifact.                                    |
+| `license`   | License associated with the artifact.                    |
+| `imageUrl`  | Public URL of the artifact's image.                      |
+| `whitelist` | List of addresses that can access the artifact.          |
+| `blacklist` | List of addresses that cannot access the artifact.       |
+| `createdAt` | When the artifact was created (ISO 8601 timestamp).      |
+| `updatedAt` | When the artifact was last updated (ISO 8601 timestamp). |
 
 ---
+
+<!-- Table ends -->
 
 ## Creating an Artifact
 
 ### Step 1: Prepare the Artifact Data
 
-Before creating an artifact, gather all necessary information, including the asset data, name, and description.
+:::info
+The user must provide authorization tokens to create an artifact. This process ensures that the user is authenticated and authorized to create artifacts.
+:::
+
+Before creating an artifact, gather all necessary information. The full data object is described below:
+
+| Feature   | Description                                                                                     |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| `name`    | Name of the artifact.                                                                           |
+| `asset`   | An object containing the `data` property which represents a base64 representation of the image. |
+| `license` | "Open" / "Exclusive" / "Non-Commercial" / "Exclusive Non-Commercial"                            |
 
 ### Step 2: Make API request
 
@@ -42,6 +54,9 @@ With the artifact data ready, you can begin the artifact creation process. Below
 
 :::tip
 Prompt the user to sign a message with an onchain identity like a web3 wallet. This process authenticates the user and generates an access token that your application can use for subsequent requests.
+:::
+:::warning
+The image data must be base64 encoded. Also, the image data cannot be changed once the artifact is created. The artifact creation process is irreversible and the image data cannot be updated.
 :::
 
 <Tabs>
@@ -66,9 +81,9 @@ axios
     url: "https://api.arttribute.io/v2/artifacts",
     headers: {
       "Content-Type": "application/json",
-      "x-authentication-address": address,
+      "x-authentication-address": address, // web3 wallet address
       "x-authentication-message": message,
-      "x-authentication-signature": signature,
+      "x-authentication-signature": signature, // signature of the message
     },
     data: JSON.stringify(data),
   })
@@ -109,4 +124,223 @@ curl --location --request POST 'https://api.arttribute.io/v2/artifacts' \
 Arttribute provides a range of features beyond creating artifacts. In this section, we'll walk you through how to:
 
 - Fetch information about an Artifact
+- Update an Artifact
 - Delete an Artifact
+
+## Fetching Artifacts
+
+### All Artifacts
+
+To retrieve all artifacts, make a GET request to the `/artifacts` endpoint. Below is an example of how to fetch all artifacts using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get("https://api.arttribute.io/v2/artifacts")
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns an array of artifacts
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/artifacts'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Artifact by ID
+
+To retrieve a specific artifact, make a GET request to the `/artifacts/{id}` endpoint. Below is an example of how to fetch a specific artifact using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/artifacts/${id}`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns the artifact with the specified ID
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/artifacts/{id}'
+```
+
+</TabItem>
+
+</Tabs>
+
+### Artifacts by Creator
+
+To retrieve all artifacts created by a specific user, make a GET request to the `/users/{creatorId}/artifacts` endpoint. Below is an example of how to fetch all artifacts created by a specific user using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .get(`https://api.arttribute.io/v2/users/${creatorId}/artifacts`)
+  .then((response) => {
+    console.log(JSON.stringify(response.data)); // returns an array of artifacts created by the specified user
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a POST request with cURL"
+curl 'https://api.arttribute.io/v2/users/{creatorId}/artifacts'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Updating Artifacts
+
+### Step 1: Prepare the Artifact Data
+
+Before updating an artifact, gather all necessary information. The fields available for updating an artifact are:
+
+| Feature     | Description                                                          |
+| ----------- | -------------------------------------------------------------------- |
+| `name`      | Name of the artifact.                                                |
+| `license`   | "Open" / "Exclusive" / "Non-Commercial" / "Exclusive Non-Commercial" |
+| `whitelist` | List of `string` addresses that can access the artifact.             |
+| `blacklist` | List of `string` addresses that cannot access the artifact.          |
+
+### Step 2: Make API request
+
+With the artifact data ready, you can begin the artifact update process. Below are code snippets illustrating how to structure your API request.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+let data = {
+  name: "Digital Painting",
+  license: "Open",
+  whitelist: ["0x1234", "0x5678"],
+  blacklist: ["0x9876"],
+};
+
+axios
+  .request({
+    method: "patch",
+    maxBodyLength: Infinity,
+    url: `https://api.arttribute.io/v2/artifacts/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+    data: JSON.stringify(data),
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a PATCH request with cURL"
+curl --location --request PATCH 'https://api.arttribute.io/v2/artifacts/{id}' \
+--header 'Content-Type: application/json' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature' \
+--data '{
+  "name": "Digital Painting",
+  "license": "Open",
+  "whitelist": ["0x1234", "0x5678"],
+  "blacklist": ["0x9876"]
+}'
+```
+
+</TabItem>
+
+</Tabs>
+
+## Deleting an Artifact
+
+To delete an artifact, make a DELETE request to the `/artifacts/{id}` endpoint. Below is an example of how to delete an artifact using the Arttribute API.
+
+<Tabs>
+
+<TabItem value="nodejs" label="NodeJS">
+
+```js title="Making a Node JS request with axios"
+const axios = require("axios");
+
+axios
+  .request({
+    method: "delete",
+    url: `https://api.arttribute.io/v2/artifacts/${id}`,
+    headers: {
+      "x-authentication-address": address, // web3 wallet address
+      "x-authentication-message": message,
+      "x-authentication-signature": signature, // signature of the message
+    },
+  })
+  .then((response) => {
+    console.log(JSON.stringify(response));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+</TabItem>
+
+<TabItem value="curl" label="cURL">
+
+```bash title="Making a DELETE request with cURL"
+curl --location --request DELETE 'https://api.arttribute.io/v2/artifacts/{id}' \
+--header 'x-authentication-address: address' \
+--header 'x-authentication-message: message' \
+--header 'x-authentication-signature: signature'
+```
+
+</TabItem>
+
+</Tabs>
